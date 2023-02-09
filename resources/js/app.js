@@ -1,22 +1,29 @@
-require("./bootstrap");
+import "./bootstrap";
 
 import { createApp, h } from "vue";
-import { createInertiaApp, Link } from "@inertiajs/inertia-vue3";
+import { createInertiaApp, Link } from "@inertiajs/vue3";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 
 import AppLayout from "./Layouts/App.vue";
 
-// common
-import CustomButton from "./Commons/CustomButton";
+// commons
+import CustomButton from "./Commons/CustomButton.vue";
 
 createInertiaApp({
-    resolve: (name) => require(`./Pages/${name}`),
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.vue`,
+            import.meta.glob("./Pages/**/*.vue")
+        ),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .component('Link', Link)
-            .component('AppLayout', AppLayout)
-            .component('CustomButton', CustomButton)
-            .mixin({ methods: { route } })
-            .mount(el);
+        return (
+            createApp({ render: () => h(App, props) })
+                .use(plugin)
+                .mixin({ methods: { route } })
+                .component("Link", Link)
+                .component("AppLayout", AppLayout)
+                .component("CustomButton", CustomButton)
+                .mount(el)
+        );
     },
 });

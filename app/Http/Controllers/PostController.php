@@ -12,14 +12,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = [
-            [
-                'id' => 1,
-                'title' => 'title',
-                'content' => 'content',
-                'created_at' => now(),
-            ]
-        ];
+        $posts = PostResource::collection(Post::latest()->get());
 
         return inertia('Posts/Index', compact('posts'));
     }
