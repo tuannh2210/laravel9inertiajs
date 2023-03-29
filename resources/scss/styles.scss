@@ -1,0 +1,6 @@
+@import "~@coreui/coreui/scss/coreui";
+@import "~@coreui/icons/css/all.css";
+
+html:not([dir=rtl]) .wrapper {
+    padding-left: var(--cui-sidebar-occupy-start, 0);
+}
